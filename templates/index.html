@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Text to Speech</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Text to Speech</h1>
+    <form id="speech-form">
+      <label for="text">Enter text:</label>
+      <input type="text" id="text" name="text">
+      <button type="submit">Speak</button>
+    </form>
+    <p id="speech"></p>
+    <script>
+      $(function() {
+        $("#speech-form").submit(function(event) {
+          event.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: "/speech",
+            data: $(this).serialize(),
+            success: function(data) {
+              $("#speech").text(data);
+              var utterance = new SpeechSynthesisUtterance(data);
+              speechSynthesis.speak(utterance);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
